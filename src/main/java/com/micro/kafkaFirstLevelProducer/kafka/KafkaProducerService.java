@@ -18,9 +18,15 @@ public KafkaProducerService() {
 	 kafkaProducer= ProducerCreator.createProducer();
 }
 
-	public void send(String requestBody) {
-		ProducerRecord<String, String> record = new ProducerRecord<>(KafkaConstants.TOPIC_NAME, requestBody);  // take the topic name from config server
-	    kafkaProducer.send(record);
-	    kafkaProducer.flush();
+	public void send(String hostname,String requestBody) {
+		ProducerRecord<String, String> record = new ProducerRecord<>(KafkaConstants.TOPIC_NAME,hostname,requestBody);  // take the topic name from config server
+		try {
+			kafkaProducer.send(record);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		kafkaProducer.flush();
+		System.out.println("Record flushed");
 	}
 }

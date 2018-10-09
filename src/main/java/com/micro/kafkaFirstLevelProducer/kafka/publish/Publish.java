@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.micro.kafkaFirstLevelProducer.kafka.KafkaProducerService;
@@ -21,10 +22,10 @@ public class Publish {
 	@Autowired
 	KafkaProducerService kafkaProducer;
 
-	@RequestMapping(value = "/docker", method = RequestMethod.POST)
-	public ResponseEntity<String> postDockerData(@RequestBody String requestBody) {
+	@RequestMapping(value = "/docker",params = {"hostname"}, method = RequestMethod.POST)
+	public ResponseEntity<String> postDockerData(@RequestParam(value ="hostname", required=false) String hostname, @RequestBody String requestBody) {
 		URI uri = null;
-		kafkaProducer.send(requestBody);
+		kafkaProducer.send(hostname,requestBody);
 		return ResponseEntity.created(uri).build();
 	}
 }
