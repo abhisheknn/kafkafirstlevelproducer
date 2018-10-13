@@ -1,11 +1,13 @@
 package com.micro.kafkaFirstLevelProducer.kafka;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
+import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;

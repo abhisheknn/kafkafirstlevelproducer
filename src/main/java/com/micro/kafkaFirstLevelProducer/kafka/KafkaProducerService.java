@@ -2,7 +2,6 @@ package com.micro.kafkaFirstLevelProducer.kafka;
 
 import java.util.Map;
 
-
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -13,13 +12,18 @@ import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
 
 @Component
 public class KafkaProducerService {
-Producer<String, String> kafkaProducer;
-public KafkaProducerService() {
-	 kafkaProducer= ProducerCreator.createProducer();
-}
+	private Producer<String, String> kafkaProducer;
 
-	public void send(String hostname,String requestBody) {
-		ProducerRecord<String, String> record = new ProducerRecord<>(KafkaConstants.TOPIC_NAME,hostname,requestBody);  // take the topic name from config server
+	public KafkaProducerService() {
+		kafkaProducer = ProducerCreator.createProducer();
+	}
+
+	private Gson gson = new Gson();
+
+	public void send(String hostname, Map<String, Object> requestBody) {
+
+		ProducerRecord<String, String> record = new ProducerRecord<>(KafkaConstants.TOPIC_NAME, hostname,
+				gson.toJson(requestBody)); // take the topic name from config server
 		try {
 			kafkaProducer.send(record);
 		} catch (Exception e) {
