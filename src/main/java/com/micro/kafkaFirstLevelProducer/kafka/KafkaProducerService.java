@@ -21,15 +21,22 @@ public class KafkaProducerService {
 	private Gson gson = new Gson();
 
 	public void send(String hostname, Map<String, Object> requestBody) {
-
-		ProducerRecord<String, String> record = new ProducerRecord<>(KafkaConstants.TOPIC_NAME, hostname,
-				gson.toJson(requestBody)); // take the topic name from config server
+		ProducerRecord<String, String> record =null;
+		if(requestBody.get("TYPE").equals("CONTAINERINFO")) {
+			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, hostname,
+				gson.toJson(requestBody)); 
+		}else if(requestBody.get("TYPE").equals("DELETEDCONTAINERS")) {
+			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, hostname,
+					gson.toJson(requestBody));
+		}
+		
 		try {
 			kafkaProducer.send(record);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		kafkaProducer.flush();
 		System.out.println("Record flushed");
 	}
