@@ -1,5 +1,7 @@
 package com.micro.kafkaFirstLevelProducer.kafka;
 
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -8,6 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
 
 @Component
@@ -19,7 +22,8 @@ public class KafkaProducerService {
 	}
 
 	private Gson gson = new Gson();
-
+    Type  mapType= new TypeToken<Map<String,Object>>(){}.getType();
+    Type listType= new TypeToken<List<Map<String,Object>>>(){}.getType();
 	public void send(String hostname, Map<String, Object> requestBody) {
 		ProducerRecord<String, String> record =null;
 		if(requestBody.get("TYPE").equals("CONTAINERINFO")) {
