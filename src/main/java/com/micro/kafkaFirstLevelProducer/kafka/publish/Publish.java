@@ -7,16 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.micro.kafkaFirstLevelProducer.kafka.KafkaProducerService;
+import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
 
 @RestController
 @RequestMapping(value = "/publish")
@@ -25,10 +29,10 @@ public class Publish {
 	@Autowired
 	KafkaProducerService kafkaProducer;
 	
-	@RequestMapping(value = "/docker",params = {"hostname"}, method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> postDockerData(@RequestParam(value ="hostname", required=false) String hostname, @RequestBody Map<String,Object> requestBody) {
+	@RequestMapping(value = "/docker",params = {"macaddress"}, method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> postDockerData(@RequestParam(value ="macaddress", required=false) String macaddress, @RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
 		URI uri = null;
-		kafkaProducer.send(hostname,requestBody);
+		kafkaProducer.send(macaddress,requestBody);
 		return ResponseEntity.created(uri).build();
 	}
 }

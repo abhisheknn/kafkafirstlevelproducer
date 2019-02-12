@@ -8,4 +8,5 @@ public class KafkaConstants {
 	public static String OFFSET_RESET_LATEST = "latest";
 	public static String OFFSET_RESET_EARLIER = "earliest";
 	public static Integer MAX_POLL_RECORDS = 1;
+	public static final String JWTOKEN = "jwtoken";
 }
