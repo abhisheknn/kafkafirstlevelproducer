@@ -24,14 +24,14 @@ public class KafkaProducerService {
 	private Gson gson = new Gson();
     Type  mapType= new TypeToken<Map<String,Object>>(){}.getType();
     Type listType= new TypeToken<List<Map<String,Object>>>(){}.getType();
-	public void send(String hostname, Map<String, Object> requestBody) {
+	public void send(String macaddress, Map<String, Object> requestBody) {
 		ProducerRecord<String, String> record =null;
 		if(requestBody.get("TYPE").equals("CONTAINERINFO")) {
-			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, hostname,
-				gson.toJson(requestBody)); 
+			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, macaddress,
+				gson.toJson(requestBody.get("value"))); 
 		}else if(requestBody.get("TYPE").equals("DELETEDCONTAINERS")) {
-			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, hostname,
-					gson.toJson(requestBody));
+			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, macaddress,
+					gson.toJson(requestBody.get("value")));
 		}
 		
 		try {
