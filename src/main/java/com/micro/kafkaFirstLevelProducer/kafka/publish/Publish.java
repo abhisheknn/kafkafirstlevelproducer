@@ -29,10 +29,10 @@ public class Publish {
 	@Autowired
 	KafkaProducerService kafkaProducer;
 	
-	@RequestMapping(value = "/docker",params = {"macaddress"}, method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> postDockerData(@RequestParam(value ="macaddress", required=false) String macaddress, @RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
+	@RequestMapping(value = "/docker",params = {"key"}, method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> postDockerData(@RequestParam(value ="key", required=false) String key, @RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
 		URI uri = null;
-		kafkaProducer.send(macaddress,requestBody);
+		kafkaProducer.send(key,requestBody);
 		return ResponseEntity.created(uri).build();
 	}
 }

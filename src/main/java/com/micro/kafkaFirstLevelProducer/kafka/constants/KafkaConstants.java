@@ -9,4 +9,7 @@ public class KafkaConstants {
 	public static String OFFSET_RESET_EARLIER = "earliest";
 	public static Integer MAX_POLL_RECORDS = 1;
 	public static final String JWTOKEN = "jwtoken";
+	public static final String FILE_DIFF_TOPIC_NAME = "file_diff";
+	public static final String COMMANDS_TOPIC_NAME = "commands";
+	public static final String PROCESSES_TOPIC_NAME = "processes";
 }

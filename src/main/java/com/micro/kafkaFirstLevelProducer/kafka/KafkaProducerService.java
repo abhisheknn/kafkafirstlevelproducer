@@ -24,13 +24,22 @@ public class KafkaProducerService {
 	private Gson gson = new Gson();
     Type  mapType= new TypeToken<Map<String,Object>>(){}.getType();
     Type listType= new TypeToken<List<Map<String,Object>>>(){}.getType();
-	public void send(String macaddress, Map<String, Object> requestBody) {
+	public void send(String key, Map<String, Object> requestBody) {
 		ProducerRecord<String, String> record =null;
 		if(requestBody.get("TYPE").equals("CONTAINERINFO")) {
-			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, macaddress,
+			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, key,
 				gson.toJson(requestBody.get("value"))); 
 		}else if(requestBody.get("TYPE").equals("DELETEDCONTAINERS")) {
-			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, macaddress,
+			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
+		}else if(requestBody.get("TYPE").equals("FILE_DIFF")) {
+			record= new ProducerRecord<>(KafkaConstants.FILE_DIFF_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
+		}else if(requestBody.get("TYPE").equals("COMMANDS")) {
+			record= new ProducerRecord<>(KafkaConstants.COMMANDS_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
+		}else if(requestBody.get("TYPE").equals("PROCESSES")) {
+			record= new ProducerRecord<>(KafkaConstants.PROCESSES_TOPIC_NAME, key,
 					gson.toJson(requestBody.get("value")));
 		}
 		
