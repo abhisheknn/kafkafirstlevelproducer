@@ -29,6 +29,9 @@ public class KafkaProducerService {
 		if(requestBody.get("TYPE").equals("CONTAINERINFO")) {
 			record= new ProducerRecord<>(KafkaConstants.CONTAINERINFO_TOPIC_NAME, key,
 				gson.toJson(requestBody.get("value"))); 
+		}else if(requestBody.get("TYPE").equals("CONTAINERLIST")) {
+			record= new ProducerRecord<>(KafkaConstants.CONTAINERLIST_TOPIC_NAME, key,
+				gson.toJson(requestBody.get("value"))); 
 		}else if(requestBody.get("TYPE").equals("DELETEDCONTAINERS")) {
 			record= new ProducerRecord<>(KafkaConstants.DELETEDCONTAINERLIST_TOPIC_NAME, key,
 					gson.toJson(requestBody.get("value")));
@@ -41,7 +44,17 @@ public class KafkaProducerService {
 		}else if(requestBody.get("TYPE").equals("PROCESSES")) {
 			record= new ProducerRecord<>(KafkaConstants.PROCESSES_TOPIC_NAME, key,
 					gson.toJson(requestBody.get("value")));
+		}else if(((String)requestBody.get("TYPE")).contains("NETWORK_LIST")) {
+			record= new ProducerRecord<>(KafkaConstants.NETWORK_LIST_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
+		}else if(((String)requestBody.get("TYPE")).equals("NETWORK_CREATE") || ((String)requestBody.get("TYPE")).equals("NETWORK_CONNECT")||((String)requestBody.get("TYPE")).equals("NETWORK_DISCONNECT")) {
+			record= new ProducerRecord<>(KafkaConstants.NETWORK_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
+		}else if(((String)requestBody.get("TYPE")).equals("NETWORK_DESTROY")|| ((String)requestBody.get("TYPE")).equals("NETWORK_REMOVE")) {
+			record= new ProducerRecord<>(KafkaConstants.NETWORK_DELETED_TOPIC_NAME, key,
+					gson.toJson(requestBody.get("value")));
 		}
+		
 		
 		try {
 			kafkaProducer.send(record);
