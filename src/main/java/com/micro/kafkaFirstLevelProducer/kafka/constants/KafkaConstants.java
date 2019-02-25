@@ -22,7 +22,7 @@ public class KafkaConstants {
 	public static final String NETWORK_DELETED_TOPIC_NAME = "deleted_networkid";
 	
 	public static final Map<String, String> TOPICS= initMap();
-	private static final String VOLUME_TOPIC_NAME = "volumes";
+	private static final String VOLUME_TOPIC_NAME = "volume_details";
 	private static final String VOLUME_DELETED_TOPIC_NAME = "deleted_volumeid";
 	private static final String VOLUMELIST_TOPIC_NAME = "volume_list";
 	
