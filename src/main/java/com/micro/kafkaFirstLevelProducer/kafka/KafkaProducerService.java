@@ -28,20 +28,22 @@ public class KafkaProducerService {
     Type  mapType= new TypeToken<Map<String,Object>>(){}.getType();
     Type listType= new TypeToken<List<Map<String,Object>>>(){}.getType();
 	public void send(String key, Map<String, Object> requestBody) {
-		
 		try {
 			if(KafkaConstants.TOPICS.get(requestBody.get("TYPE")).equals(KafkaConstants.CONTAINERINFO_TOPIC_NAME)) {
 				((Map<String, Object>)requestBody.get("value")).put("macaddress", key);
 				}
 			
+			if(KafkaConstants.TOPICS.get(requestBody.get("TYPE")).equals(KafkaConstants.NETWORK_TOPIC_NAME)) {
+				((Map<String, Object>)requestBody.get("value")).put("macaddress", key);
+				System.out.println(requestBody);
+			}
+			
+			
 			ProducerRecord<String, String> record= new ProducerRecord<String, String>(KafkaConstants.TOPICS.get(requestBody.get("TYPE")),key, gson.toJson(requestBody.get("value")));
 			kafkaProducer.send(record);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		kafkaProducer.flush();
-		System.out.println("Record flushed");
 	}
 }
