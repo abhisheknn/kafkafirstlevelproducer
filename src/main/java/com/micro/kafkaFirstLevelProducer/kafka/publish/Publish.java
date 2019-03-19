@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.micro.kafkaFirstLevelProducer.kafka.KafkaProducerService;
 import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
+import com.micro.kafkaFirstLevelProducer.rbac.TokenManager;
 
 @RestController
 @RequestMapping(value = "/publish")
@@ -29,10 +30,25 @@ public class Publish {
 	@Autowired
 	KafkaProducerService kafkaProducer;
 	
-	@RequestMapping(value = "/docker",params = {"key"}, method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> postDockerData(@RequestParam(value ="key", required=false) String key, @RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
+	@Autowired
+	TokenManager tokenManager;
+	
+	
+	//Key is tenantid_macaddress
+	// send every thing in headers 
+	
+	
+	@RequestMapping(value = "/docker", method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> postDockerData(@RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
 		URI uri = null;
-		kafkaProducer.send(key,requestBody);
+		List<String> token =httpHeaders.get("JWToken");
+		List<String> macaddress =httpHeaders.get("macAddress");
+		List<String> tenants =httpHeaders.get("tenantId");
+		String macaddr=macaddress.get(0);
+		String tenantId=tenants.get(0);
+		if(tokenManager.verify(tenantId,macaddr, token.get(0))) {
+			kafkaProducer.send(tenantId+"_"+macaddr,requestBody);
+		}
 		return ResponseEntity.created(uri).build();
 	}
 }

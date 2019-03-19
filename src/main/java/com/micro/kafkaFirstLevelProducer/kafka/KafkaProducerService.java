@@ -35,7 +35,6 @@ public class KafkaProducerService {
 			
 			if(KafkaConstants.TOPICS.get(requestBody.get("TYPE")).equals(KafkaConstants.NETWORK_TOPIC_NAME)) {
 				((Map<String, Object>)requestBody.get("value")).put("macaddress", key);
-				System.out.println(requestBody);
 			}
 			
 			
