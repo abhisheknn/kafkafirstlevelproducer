@@ -34,7 +34,9 @@ public class TokenManager {
 
 	private String publicKey;
 
-	private Map<String, Map<String, String>> activeMachines = new HashMap<>();
+	@Autowired
+	private MachineStatus machineStatus;
+	
 	Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 	Type mapType = new TypeToken<Map<String, String>>() {
 	}.getType();
@@ -44,28 +46,6 @@ public class TokenManager {
 	public void getPublicKey() {
 		Response publicKey= restClient.doGet(Constants.TOKENMANAGER_GETPUBLICKEY, Constants.commonHeaders);
 		 this.publicKey =publicKey.getEntity();
-	}
-
-	//@Scheduled(fixedRate = 20000)
-	private void getActiveMachines() {
-		Response reponse = null;
-		synchronized (this) {
-		for (String tenant : tenants) {
-			try {
-				reponse = restClient.doGet(Constants.TOKENMANAGER_GETMACHINES + "?tenantid=" + tenant,
-						Constants.commonHeaders);
-			} catch (Exception e) {
-
-			}
-			if (reponse != null) {
-				try {
-					this.activeMachines.put(tenant, gson.fromJson(reponse.getEntity(), mapType)) ;	
-				} catch (JsonSyntaxException e) {
-					e.printStackTrace();
-				}
-			}
-			}
-		}
 	}
 
 	public boolean verify(String tenantid, String macaddress, String token) {
@@ -86,27 +66,12 @@ public class TokenManager {
 	}
 
 	private String getMachineStatus(String tenantid, String macaddress) {
-		String machineStatus=null;
-		if(!tenants.contains(tenantid)) tenants.add(tenantid);
-		Map<String, String> machines = this.activeMachines.get(tenantid);
-		if (null == machines) {
-			machineStatus = getStatus(tenantid, macaddress);
-		}else {
-			machineStatus = machines.get(macaddress);
-			if(null==machineStatus) {
-				machineStatus = getStatus(tenantid, macaddress);
-			}
+		String status="inactive";
+		Map<String, String> machines = machineStatus.getActiveMachines().get(tenantid);
+		if (null != machines) {
+			status = machines.get(macaddress);
 		}
-		return machineStatus;
-	}
-
-	private String getStatus(String tenantid, String macaddress) {
-		String machineStatus;
-		Map<String, String> machines;
-		getActiveMachines();
-		machines = this.activeMachines.get(tenantid);
-		machineStatus = machines.get(macaddress);
-		return machineStatus;
+		return status;
 	}
 
 	private void killAgent() {
