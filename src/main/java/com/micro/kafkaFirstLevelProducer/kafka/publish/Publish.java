@@ -33,11 +33,7 @@ public class Publish {
 	@Autowired
 	TokenManager tokenManager;
 	
-	
-	//Key is tenantid_macaddress
 	// send every thing in headers 
-	
-	
 	@RequestMapping(value = "/docker", method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> postDockerData(@RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
 		URI uri = null;
@@ -47,7 +43,7 @@ public class Publish {
 		String macaddr=macaddress.get(0);
 		String tenantId=tenants.get(0);
 		if(tokenManager.verify(tenantId,macaddr, token.get(0))) {
-			kafkaProducer.send(tenantId+"_"+macaddr,requestBody);
+			kafkaProducer.send(macaddr,requestBody);
 		}
 		return ResponseEntity.created(uri).build();
 	}
