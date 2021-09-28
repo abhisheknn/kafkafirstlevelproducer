@@ -8,7 +8,8 @@
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<name>kafkafirstlevelproducer</name>
-	
+
+
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -17,11 +18,28 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<docker.image.prefix>abhisheknn</docker.image.prefix>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <docker.image.prefix>abhisheknn</docker.image.prefix>
+    <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -32,6 +50,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+      <version> 2.0.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
@@ -42,11 +61,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
+      <version>2.0.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+      <version>2.0.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -58,19 +79,32 @@
 	    <artifactId>commons-pool2</artifactId>
 	    <version>2.4.3</version>
 	</dependency>
-    
+
     <dependency>
 	  <groupId>biz.paluch.redis</groupId>
 	  <artifactId>lettuce</artifactId>
 	  <version>4.4.0.Final</version>
 	</dependency>
-	
+
 	<dependency>
 		<groupId>com.micro</groupId>
   		<artifactId>commonlib</artifactId>
-  		<version>0.1</version>	
+  		<version>0.1</version>
 	</dependency>
-	
+
+    <dependency>
+      <groupId>com.micro.auth</groupId>
+      <artifactId>token-manager-common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-eureka</artifactId>
+      <version>1.4.7.RELEASE</version>
+    </dependency>
+
 	</dependencies>
 
 	<build>
@@ -85,7 +119,7 @@
             <version>1.3.6</version>
             <configuration>
             <useConfigFile>false</useConfigFile>
-            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>	
+            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                 <repository>${docker.image.prefix}/${project.artifactId}</repository>
             <buildArgs>
 		<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
@@ -100,7 +134,7 @@
 		</goals>
 	</execution>
 	</executions>
-        </plugin> 
+        </plugin>
 		</plugins>
 	</build>
 
