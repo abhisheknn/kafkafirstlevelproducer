@@ -11,6 +11,7 @@ import java.util.Set;
 import com.micro.auth.client.TokenManagerServiceClient;
 import com.micro.auth.pojo.Machine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import com.micro.kafkaFirstLevelProducer.constants.Constants;
 import io.jsonwebtoken.Claims;
 
 @Component
+@ConditionalOnProperty(prefix = "tokenManager", name = "enabled", havingValue = "true")
 public class TokenManagerService {
 
 	@Autowired
@@ -48,16 +50,14 @@ public class TokenManagerService {
 	}.getType();
 	Set<String> tenants = new HashSet<>();
 
-	//@Scheduled(fixedRate = 10000)
+	@Scheduled(fixedRate = 10000)
 	public void getPublicKey() {
-	 // String publicKey=tokenManagerServiceClient.getPublicKey();
-		//Response publicKey= restClient.doGet(Constants.TOKENMANAGER_GETPUBLICKEY, Constants.commonHeaders);
-		 //this.publicKey =publicKey;
+    Map<String,String> publicKey=tokenManagerServiceClient.getPublicKey();
+    this.publicKey =(String) publicKey.get("publicKey");
 	}
 
   public String getPublicKeyFromController() {
     Map<String,String> publicKey=tokenManagerServiceClient.getPublicKey();
-    //Response publicKey= restClient.doGet(Constants.TOKENMANAGER_GETPUBLICKEY, Constants.commonHeaders);
     this.publicKey =(String) publicKey.get("publicKey");
     return this.publicKey;
   }
