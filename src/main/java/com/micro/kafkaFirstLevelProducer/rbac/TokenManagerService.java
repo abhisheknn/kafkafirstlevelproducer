@@ -11,6 +11,7 @@ import java.util.Set;
 import com.micro.auth.client.TokenManagerServiceClient;
 import com.micro.auth.pojo.Machine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +31,9 @@ import io.jsonwebtoken.Claims;
 @Component
 @ConditionalOnProperty(prefix = "tokenManager", name = "enabled", havingValue = "true")
 public class TokenManagerService {
+
+  @Value(value = "${schedule.getPublicKey.enabled}")
+  private boolean getPublicKeyEnabled;
 
 	@Autowired
 	private RestClient restClient;
@@ -52,8 +56,10 @@ public class TokenManagerService {
 
 	@Scheduled(fixedRate = 10000)
 	public void getPublicKey() {
-    Map<String,String> publicKey=tokenManagerServiceClient.getPublicKey();
-    this.publicKey =(String) publicKey.get("publicKey");
+	  if(getPublicKeyEnabled) {
+      Map<String, String> publicKey = tokenManagerServiceClient.getPublicKey();
+      this.publicKey = (String) publicKey.get("publicKey");
+    }
 	}
 
   public String getPublicKeyFromController() {

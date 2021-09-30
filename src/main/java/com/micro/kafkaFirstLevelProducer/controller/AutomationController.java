@@ -4,6 +4,8 @@ import com.micro.auth.pojo.Machine;
 import com.micro.kafkaFirstLevelProducer.kafka.KafkaProducerService;
 import com.micro.kafkaFirstLevelProducer.rbac.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,8 @@ import java.util.Map;
 @RequestMapping("/automation")
 public class AutomationController {
 
-  //@Autowired
+  @Autowired
+  @Qualifier("automation-token-manager")
   TokenManagerService tokenManagerService;
 
   @Autowired

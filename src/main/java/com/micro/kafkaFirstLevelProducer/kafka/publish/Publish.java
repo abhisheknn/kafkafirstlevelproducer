@@ -28,7 +28,7 @@ public class Publish {
 	@Autowired
 	KafkaProducerService kafkaProducer;
 
-	//@Autowired
+	@Autowired
   TokenManagerService tokenManager;
 
 	// send every thing in headers
