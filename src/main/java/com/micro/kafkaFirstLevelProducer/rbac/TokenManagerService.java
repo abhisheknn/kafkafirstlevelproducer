@@ -1,10 +1,7 @@
 package com.micro.kafkaFirstLevelProducer.rbac;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,18 +10,14 @@ import com.micro.auth.pojo.Machine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.micro.client.Response;
 import com.micro.jwt.JWT;
 import com.micro.kafkaFirstLevelProducer.client.RestClient;
-import com.micro.kafkaFirstLevelProducer.constants.Constants;
 
 import io.jsonwebtoken.Claims;
 
@@ -44,7 +37,7 @@ public class TokenManagerService {
 	private String publicKey;
 
 	@Autowired
-	 private MachineStatus machineStatus;
+	 private MachineStatusService machineStatusService;
 
 	@Autowired
   private TokenManagerServiceClient tokenManagerServiceClient;
@@ -88,7 +81,7 @@ public class TokenManagerService {
 
 	private String getMachineStatus(String tenantid, String macaddress) {
 		String status="inactive";
-		Map<String, String> machines = machineStatus.getActiveMachines().get(tenantid);
+		Map<String, String> machines = machineStatusService.getActiveMachines().get(tenantid);
 		if (null != machines) {
 			status = machines.get(macaddress);
 		}

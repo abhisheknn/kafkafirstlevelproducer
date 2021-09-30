@@ -16,7 +16,7 @@ import com.micro.kafkaFirstLevelProducer.constants.Constants;
 import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
 
 @Component
-public class MachineStatus {
+public class MachineStatusService {
 
 	private Map<String, Map<String, String>> activeMachines = new HashMap<>();
 
@@ -25,8 +25,8 @@ public class MachineStatus {
 	}
 
 
-	public MachineStatus() {
-//
+	public MachineStatusService() {
+
 //		KafkaConsumer kafkaConsumer = new KafkaConsumer();
 //		Properties config = new Properties();
 //		config.put(ConsumerConfig.GROUP_ID_CONFIG, Constants.MACHINESTATUSGROUPID);
