@@ -1,4 +1,4 @@
-package com.micro.kafkaFirstLevelProducer.kafka.publish;
+package com.micro.kafkaFirstLevelProducer.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
