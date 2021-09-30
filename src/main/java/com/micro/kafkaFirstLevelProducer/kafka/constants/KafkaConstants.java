@@ -20,12 +20,13 @@ public class KafkaConstants {
 	public static final String NETWORK_LIST_TOPIC_NAME = "dockerx.network_list";
 	public static final String NETWORK_TOPIC_NAME = "dockerx.network_details";
 	public static final String NETWORK_DELETED_TOPIC_NAME = "dockerx.deleted_networkid";
-	
+
 	public static final Map<String, String> TOPICS= initMap();
 	private static final String VOLUME_TOPIC_NAME = "dockerx.volume_details";
 	private static final String VOLUME_DELETED_TOPIC_NAME = "dockerx.deleted_volumeid";
 	private static final String VOLUMELIST_TOPIC_NAME = "dockerx.volume_list";
-	
+  public static final String MACHINESTATUS = "machine-status";
+
 	private static Map<String, String> initMap() {
 	Map<String, String> map= new HashMap<>();
 	map.put("CONTAINERINFO", KafkaConstants.CONTAINERINFO_TOPIC_NAME);

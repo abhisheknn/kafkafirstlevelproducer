@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+import com.micro.kafkaFirstLevelProducer.rbac.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.micro.kafkaFirstLevelProducer.kafka.KafkaProducerService;
-import com.micro.kafkaFirstLevelProducer.kafka.constants.KafkaConstants;
-import com.micro.kafkaFirstLevelProducer.rbac.TokenManager;
+
 
 @RestController
 @RequestMapping(value = "/publish")
@@ -29,11 +27,11 @@ public class Publish {
 
 	@Autowired
 	KafkaProducerService kafkaProducer;
-	
+
 	@Autowired
-	TokenManager tokenManager;
-	
-	// send every thing in headers 
+  TokenManagerService tokenManager;
+
+	// send every thing in headers
 	@RequestMapping(value = "/docker", method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> postDockerData(@RequestBody Map<String,Object> requestBody,@RequestHeader HttpHeaders httpHeaders) {
 		URI uri = null;
