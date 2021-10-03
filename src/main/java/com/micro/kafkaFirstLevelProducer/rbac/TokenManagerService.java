@@ -1,6 +1,7 @@
 package com.micro.kafkaFirstLevelProducer.rbac;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -48,14 +49,14 @@ public class TokenManagerService {
 	Set<String> tenants = new HashSet<>();
 
 	@Scheduled(fixedRate = 10000)
-	public void getPublicKey() {
+	public void getPublicKeySchedule() {
 	  if(getPublicKeyEnabled) {
       Map<String, String> publicKey = tokenManagerServiceClient.getPublicKey();
       this.publicKey = (String) publicKey.get("publicKey");
     }
 	}
 
-  public String getPublicKeyFromController() {
+  public String getPublicKey() {
     Map<String,String> publicKey=tokenManagerServiceClient.getPublicKey();
     this.publicKey =(String) publicKey.get("publicKey");
     return this.publicKey;
@@ -95,5 +96,11 @@ public class TokenManagerService {
 	public Machine getMachine(String tenantId,String macAddress){
     return tokenManagerServiceClient.getMachine(tenantId,macAddress);
   }
+
+  public String register(String tenantId, String macAddress){
+    Machine machine=tokenManagerServiceClient.getMachine(tenantId,macAddress);
+    return machine.getJWToken();
+  }
+
 
 }

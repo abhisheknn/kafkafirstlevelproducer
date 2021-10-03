@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@ConditionalOnProperty(prefix = "automation", name = "enabled", havingValue = "true")
 @RequestMapping("/automation")
 public class AutomationController {
 
@@ -33,7 +34,7 @@ public class AutomationController {
 
   @RequestMapping(value="/get/publicKey",method = RequestMethod.GET)
   String getPublicKey(){
-    return tokenManagerService.getPublicKeyFromController();
+    return tokenManagerService.getPublicKey();
   }
 
 

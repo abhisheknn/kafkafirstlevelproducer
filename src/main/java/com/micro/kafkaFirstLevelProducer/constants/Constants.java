@@ -11,7 +11,10 @@ public class Constants {
 	public static final String TOKENMANAGER_GETMACHINES = "http://"+TOKENMANAGERURL+"/auth/getMachines";
 	public static final String KAFKA_BROKER = System.getenv("KAFKABROKERS");
 	public static final String MACHINESTATUSGROUPID = "machine-status"+UUID.randomUUID().toString();
-	public static final String MACHINESTATUS = "machine-status";;
+	public static final String MACHINESTATUS = "machine-status";
+	public static final String TENANT_ID="TENANT_ID";
+	public static final String MACADDRESS="MACADDRESS";
+
 
 	public static Map<String, String> commonHeaders= initMap();//new HashMap<>();
 
@@ -20,6 +23,6 @@ public class Constants {
 		commonHeaders.put("Content-Type","application/json");
 		return commonHeaders;
 	}
-	
-	
+
+
 }
