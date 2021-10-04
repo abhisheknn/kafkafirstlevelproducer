@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.micro.auth.client.TokenManagerServiceClient;
 import com.micro.auth.pojo.Machine;
+import com.micro.kafkaFirstLevelProducer.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.micro.jwt.JWT;
 import com.micro.kafkaFirstLevelProducer.client.RestClient;
 
 import io.jsonwebtoken.Claims;

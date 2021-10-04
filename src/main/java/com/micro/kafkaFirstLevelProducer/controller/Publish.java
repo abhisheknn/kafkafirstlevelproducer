@@ -40,9 +40,9 @@ public class Publish {
 		List<String> tenants =httpHeaders.get("tenantId");
 		String macaddr=macaddress.get(0);
 		String tenantId=tenants.get(0);
-		if(tokenManager.verify(tenantId,macaddr, token.get(0))) {
+		//if(tokenManager.verify(tenantId,macaddr, token.get(0))) {
 			kafkaProducer.send(macaddr,requestBody);
-		}
+		//}
 		return ResponseEntity.created(uri).build();
 	}
 }
